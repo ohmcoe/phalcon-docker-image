@@ -65,12 +65,6 @@ RUN cd /root && \
 
 RUN echo TLS_REQCERT allow >> /etc/ldap/ldap.conf
 
-#phpunit
-RUN wget https://phar.phpunit.de/phpunit.phar && \
-    chmod +x phpunit.phar && \
-    mv phpunit.phar /usr/local/bin/phpunit && \
-    phpunit --version
-
 #clean
 RUN apt-get purge wget && apt-get autoremove -y
 
