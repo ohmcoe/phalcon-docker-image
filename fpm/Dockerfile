@@ -15,7 +15,6 @@ RUN apt-get update &&  \
     libfreetype6-dev \
     git \
     libldap2-dev \
-    wget \
     libmcrypt-dev && \
     docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap && \
@@ -66,8 +65,6 @@ RUN cd /root && \
 RUN echo TLS_REQCERT allow >> /etc/ldap/ldap.conf
 
 #clean
-RUN apt-get purge wget && apt-get autoremove -y
-
 RUN rm -Rf /root/buildphalcon 
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
