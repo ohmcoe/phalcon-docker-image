@@ -15,7 +15,6 @@ RUN apt-get update &&  \
     libfreetype6-dev \
     git \
     libldap2-dev \
-    wget \
     libmcrypt-dev && \
     docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap && \
@@ -65,15 +64,7 @@ RUN cd /root && \
 
 RUN echo TLS_REQCERT allow >> /etc/ldap/ldap.conf
 
-#phpunit
-RUN wget https://phar.phpunit.de/phpunit.phar && \
-    chmod +x phpunit.phar && \
-    mv phpunit.phar /usr/local/bin/phpunit && \
-    phpunit --version
-
 #clean
-RUN apt-get purge wget && apt-get autoremove -y
-
 RUN rm -Rf /root/buildphalcon 
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
