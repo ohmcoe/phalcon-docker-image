@@ -67,7 +67,7 @@ RUN echo TLS_REQCERT allow >> /etc/ldap/ldap.conf
 
 #Install tool for test
 RUN pecl install xdebug && \
-    echo "extension=xdebug.so" > /usr/local/etc/php/conf.d/20-xdebug.ini && \
+    echo "extension=xdebug.so" >> /usr/local/etc/php/conf.d/custom.ini && \
     curl -LsS http://codeception.com/codecept.phar -o /usr/local/bin/codecept && \
     chmod a+x /usr/local/bin/codecept
 
