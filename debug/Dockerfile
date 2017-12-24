@@ -1,4 +1,4 @@
-FROM php:fpm
+FROM php:7.1-fpm
 LABEL "MAINTAINER"="Sakarin Kammanee <Sakarin@coe.phuket.psu.ac.th>"
 
 ENV TZ=Asia/Bangkok
