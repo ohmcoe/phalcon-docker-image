@@ -8,7 +8,6 @@ RUN apt-get update &&  \
     apt-get install -y --no-install-recommends \
     gcc \
     libpcre3-dev \
-    libxml2-dev \
 	zlib1g-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
@@ -18,7 +17,7 @@ RUN apt-get update &&  \
     docker-php-ext-install iconv mbstring && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
-    docker-php-ext-install soap zip xml && \
+    docker-php-ext-install zip xml && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
