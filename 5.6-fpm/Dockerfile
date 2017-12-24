@@ -18,10 +18,7 @@ RUN apt-get update &&  \
     libfreetype6-dev \
     #other
     git \
-    libldap2-dev \
     libmcrypt-dev && \
-    docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && \
-    docker-php-ext-install ldap && \
     docker-php-ext-install iconv mcrypt mbstring && \
     #docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install pdo pdo_mysql && \
