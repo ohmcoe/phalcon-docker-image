@@ -14,7 +14,7 @@ RUN apt-get update &&  \
     libpng-dev \
     libfreetype6-dev \
     git \
-    libmcrypt-dev \
+    libmcrypt-dev && \
     docker-php-ext-install iconv mbstring && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
