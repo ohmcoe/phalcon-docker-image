@@ -1,15 +1,11 @@
 FROM php:5.6-fpm
 MAINTAINER Sakarin Kammanee <Sakarin@coe.phuket.psu.ac.th>
 
-RUN sed -i 's|httpredir|ftp.jp|g' /etc/apt/sources.list
-
 RUN apt-get update &&  \
     apt-get install -y --no-install-recommends \
     gcc \ 
     g++ \
     libpcre3-dev \
-    #require for soap
-    libxml2-dev \ 
     #require for zip
     zlib1g-dev \
     #require for gd
@@ -20,9 +16,8 @@ RUN apt-get update &&  \
     git \
     libmcrypt-dev && \
     docker-php-ext-install iconv mcrypt mbstring && \
-    #docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install pdo pdo_mysql && \
-    docker-php-ext-install soap zip xml && \
+    docker-php-ext-install zip xml && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
