@@ -24,7 +24,7 @@ RUN apt-get update &&  \
     docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu/ && \
     docker-php-ext-install pdo pdo_mysql pdo_dblib && \
     docker-php-ext-install mysqli && \
-    docker-php-ext-install soap zip xml && \
+    docker-php-ext-install zip xml && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
