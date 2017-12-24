@@ -8,6 +8,7 @@ RUN apt-get update &&  \
     apt-get install -y --no-install-recommends \
     gcc \
     libpcre3-dev \
+    libxml2-dev \
 	zlib1g-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
