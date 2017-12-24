@@ -2,7 +2,7 @@
 
 # Base:
 PHP Module:
-- phalcon mongo imap soap zip gd iconv mcrypt mbstring mysql mysqli pdo pdo_mysql
+- phalcon mongo soap zip gd iconv mcrypt mbstring mysql mysqli pdo pdo_mysql
 - phalcon dev tool
 
 # Using:

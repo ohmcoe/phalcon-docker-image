@@ -30,11 +30,6 @@ RUN apt-get update &&  \
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-#imap
-RUN apt-get -y install --no-install-recommends libssl-dev libc-client2007e-dev libkrb5-dev &&\
-    docker-php-ext-configure imap --with-imap-ssl --with-kerberos && \
-    docker-php-ext-install imap 
-
 #mongodb
 RUN apt-get install -y --no-install-recommends libssl-dev && \
     pecl install mongo && \
