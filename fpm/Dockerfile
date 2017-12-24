@@ -15,9 +15,6 @@ RUN apt-get update &&  \
     libfreetype6-dev \
     git \
     libmcrypt-dev \
-    libldap2-dev && \
-    docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && \
-    docker-php-ext-install ldap && \
     docker-php-ext-install iconv mbstring && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
@@ -65,8 +62,6 @@ RUN cd /root && \
     cd /root/phalcon-devtools && \
     ln -s ~/phalcon-devtools/phalcon.php /usr/bin/phalcon && \
     chmod ugo+x /usr/bin/phalcon
-
-RUN echo TLS_REQCERT allow >> /etc/ldap/ldap.conf
 
 #clean
 RUN rm -Rf /root/buildphalcon 
