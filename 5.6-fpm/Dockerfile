@@ -7,6 +7,7 @@ RUN apt-get update &&  \
     g++ \
     libpcre3-dev \
     #require for zip
+    libxml2-dev \
     zlib1g-dev \
     #require for gd
     libjpeg62-turbo-dev \
