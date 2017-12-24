@@ -14,14 +14,11 @@ RUN apt-get update &&  \
     libpng12-dev \
     libfreetype6-dev \
     git \
-    libldap2-dev \
     libmcrypt-dev && \
-    docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && \
-    docker-php-ext-install ldap && \
     docker-php-ext-install iconv mcrypt mbstring && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
-    docker-php-ext-install soap zip xml && \
+    docker-php-ext-install zip xml && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
@@ -29,11 +26,6 @@ RUN apt-get update &&  \
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
-
-#imap
-RUN apt-get -y install --no-install-recommends libssl-dev libc-client2007e-dev libkrb5-dev &&\
-    docker-php-ext-configure imap --with-imap-ssl --with-kerberos && \
-    docker-php-ext-install imap 
 
 #mongodb
 RUN apt-get install -y --no-install-recommends libssl-dev && \
@@ -61,8 +53,6 @@ RUN cd /root && \
     cd /root/phalcon-devtools && \
     ln -s ~/phalcon-devtools/phalcon.php /usr/bin/phalcon && \
     chmod ugo+x /usr/bin/phalcon
-
-RUN echo TLS_REQCERT allow >> /etc/ldap/ldap.conf
 
 #clean
 RUN rm -Rf /root/buildphalcon 
