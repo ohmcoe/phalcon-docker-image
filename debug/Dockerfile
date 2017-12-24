@@ -43,6 +43,7 @@ RUN apt-get install -y --no-install-recommends libssl-dev && \
 #custom
 RUN echo "post_max_size=21M" > /usr/local/etc/php/conf.d/custom.ini &&  \
     echo "upload_max_filesize=20M" >> /usr/local/etc/php/conf.d/custom.ini && \
+    echo "pm.status_path=/status" >> /usr/local/etc/php/conf.d/custom.ini && \
     echo "session.gc_maxlifetime=86400" >> /usr/local/etc/php/conf.d/custom.ini 
 
 #get phalcon source
