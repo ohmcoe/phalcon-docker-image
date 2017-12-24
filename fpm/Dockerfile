@@ -11,14 +11,14 @@ RUN apt-get update &&  \
     libxml2-dev \
 	zlib1g-dev \
     libjpeg62-turbo-dev \
-    libpng12-dev \
+    libpng-dev \
     libfreetype6-dev \
     git \
-    libldap2-dev \
-    libmcrypt-dev && \
+    libmcrypt-dev \
+    libldap2-dev && \
     docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap && \
-    docker-php-ext-install iconv mcrypt mbstring && \
+    docker-php-ext-install iconv mbstring && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install soap zip xml && \
@@ -54,6 +54,10 @@ RUN cd /root/buildphalcon/build/php7/64bits && \
     ./configure && make -j 8 && make install && \
     echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/30-phalcon.ini && \
     rm -Rf /root/buildphalcon
+
+#lib mcrypt
+RUN pecl install mcrypt-1.0.1 && \ 
+    echo "extension=mcrypt.so" >> /usr/local/etc/php/conf.d/custom.ini 
 
 #phalcon dev tool
 RUN cd /root && \
