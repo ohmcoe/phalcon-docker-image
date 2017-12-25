@@ -28,6 +28,8 @@ RUN apt-get update &&  \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
+#patch freetds
+RUN sed 's/\[global\]/\[global\]\n\ttds version = 8.0/g' /etc/freetds/freetds.conf > /etc/freetds/freetds.conf
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
