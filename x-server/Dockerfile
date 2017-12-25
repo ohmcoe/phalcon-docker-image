@@ -29,7 +29,7 @@ RUN apt-get update &&  \
     docker-php-ext-install gd
 
 #patch freetds
-RUN sed 's/\[global\]/\[global\]\n\ttds version = 8.0/g' /etc/freetds/freetds.conf > /etc/freetds/freetds.conf
+RUN sed -i 's/\[global\]/\[global\]\n\ttds version = 8.0/g' /etc/freetds/freetds.conf 
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
