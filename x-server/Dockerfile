@@ -26,25 +26,25 @@ RUN apt-get update &&  \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
-ADD . .
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/8/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update
 
-#sqlsrv prerequire
-RUN apt-get install -y \
-    apt-transport-https gnupg wget && \
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/debian/8/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
-    apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev && \
-    yes | apt-get purge -y msodbcsql && \
-    ACCEPT_EULA=Y dpkg -i msodbcsql_17.0.0.5-1_amd64.deb && \
-    ACCEPT_EULA=Y dpkg -i mssql-tools_17.0.0.5-1_amd64.deb && \
-    ln -fsv /opt/mssql-tools/bin/* /usr/bin
+# Install Dependencies
+RUN ACCEPT_EULA=Y apt-get install -y \
+    unixodbc \
+    unixodbc-dev \
+    libgss3 \
+    odbcinst \
+    msodbcsql \
+    locales \
+    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
-#install mssql driver
-RUN pecl install sqlsrv && \
-    pecl install pdo_sqlsrv && \
-    echo "extension=sqlsrv.so" > /usr/local/etc/php/conf.d/20-mssql.ini && \
-    echo "extension=pdo_sqlsrv.so" >> /usr/local/etc/php/conf.d/20-mssql.ini
+# Install pdo_sqlsrv and sqlsrv from PECL. Replace pdo_sqlsrv-4.1.8preview with preferred version.
+RUN pecl install pdo_sqlsrv-4.1.8preview sqlsrv-4.1.8preview \
+    && docker-php-ext-enable pdo_sqlsrv sqlsrv
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
