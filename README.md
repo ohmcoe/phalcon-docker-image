@@ -2,7 +2,7 @@
 
 # Base:
 PHP Module:
-- phalcon mongo ldap soap zip gd iconv mcrypt mbstring mysql mysqli pdo pdo_mysql pdo_dblib for x-server environment
+- phalcon mongo ldap soap zip gd iconv mcrypt mbstring mysql mysqli pdo pdo_mysql pdo_sqlsrv sqlsrv for x-server environment
 - phalcon dev tool
 
 # Using:

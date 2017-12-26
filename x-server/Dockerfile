@@ -15,21 +15,30 @@ RUN apt-get update &&  \
     libfreetype6-dev \
     git \
     libmcrypt-dev \
-    libldap2-dev \
-    #mssql
-    freetds-dev && \
+    libldap2-dev && \
+    #other plugins
     docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && \
     docker-php-ext-install ldap && \
     docker-php-ext-install iconv mbstring && \
-    docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu/ && \
-    docker-php-ext-install pdo pdo_mysql pdo_dblib && \
+    docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install zip xml && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
-#patch freetds
-RUN sed -i 's/\[global\]/\[global\]\n\ttds version = 8.0/g' /etc/freetds/freetds.conf 
+#sqlsrv prerequire
+RUN apt-get install -y --no-install-recommends \
+    apt-transport-https gnupg2 && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    curl https://packages.microsoft.com/config/debian/8/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update && \
+    ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql mssql-tools unixodbc-dev 
+
+#install mssql driver
+RUN pecl install sqlsrv && \
+    pecl install pdo_sqlsrv && \
+    echo "extension=sqlsrv.so" > /usr/local/etc/php/conf.d/20-mssql.ini && \
+    echo "extension=pdo_sqlsrv.so" >> /usr/local/etc/php/conf.d/20-mssql.ini
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
