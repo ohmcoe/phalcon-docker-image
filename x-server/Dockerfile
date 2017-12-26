@@ -83,6 +83,12 @@ RUN cd /root && \
 
 RUN echo TLS_REQCERT allow >> /etc/ldap/ldap.conf
 
+#patch mssql
+RUN echo "deb http://deb.debian.org/debian jessie main" | tee -a /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y libssl1.0.0
+
+
 #clean
 RUN rm -Rf /root/buildphalcon 
 
