@@ -26,13 +26,19 @@ RUN apt-get update &&  \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
+ADD . .
+
 #sqlsrv prerequire
-RUN apt-get install -y --no-install-recommends \
-    apt-transport-https gnupg2 && \
+RUN apt-get install -y \
+    apt-transport-https gnupg wget && \
     curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
     curl https://packages.microsoft.com/config/debian/8/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql mssql-tools unixodbc-dev 
+    ACCEPT_EULA=Y apt-get install -y msodbcsql unixodbc-dev && \
+    yes | apt-get purge -y msodbcsql && \
+    ACCEPT_EULA=Y dpkg -i msodbcsql_17.0.0.5-1_amd64.deb && \
+    ACCEPT_EULA=Y dpkg -i mssql-tools_17.0.0.5-1_amd64.deb && \
+    ln -fsv /opt/mssql-tools/bin/* /usr/bin
 
 #install mssql driver
 RUN pecl install sqlsrv && \
