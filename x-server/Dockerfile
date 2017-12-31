@@ -26,21 +26,17 @@ RUN apt-get update &&  \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
-RUN apt-get update && apt-get install -y \
-    apt-transport-https gnupg \
-    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/8/prod.list > /etc/apt/sources.list.d/mssql-release.list \
-    && apt-get update
 
 # Install Dependencies
 RUN ACCEPT_EULA=Y apt-get install -y \
-    unixodbc \
-    unixodbc-dev \
-    libgss3 \
-    odbcinst \
-    msodbcsql \
-    locales \
+    locales unixodbc unixodbc-dev \
     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+
+ADD . .
+
+RUN ACCEPT_EULA=Y dpkg -i msodbcsql_17.0.0.5-1_amd64.deb && \
+    ACCEPT_EULA=Y dpkg -i mssql-tools_17.0.0.5-1_amd64.deb && \
+    rm *.deb
 
 # Install pdo_sqlsrv and sqlsrv from PECL. Replace pdo_sqlsrv-4.1.8preview with preferred version.
 RUN pecl install pdo_sqlsrv-5.2.0RC1 sqlsrv-5.2.0RC1 \
