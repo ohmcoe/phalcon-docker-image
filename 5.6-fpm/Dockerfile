@@ -17,7 +17,7 @@ RUN apt-get update &&  \
     git \
     libmcrypt-dev && \
     docker-php-ext-install iconv mcrypt mbstring && \
-    docker-php-ext-install pdo pdo_mysql && \
+    docker-php-ext-install pdo pdo_mysql mysqli && \
     docker-php-ext-install zip xml && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
