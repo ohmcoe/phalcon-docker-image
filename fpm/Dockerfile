@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:fpm
 LABEL "MAINTAINER"="Sakarin Kammanee <Sakarin@coe.phuket.psu.ac.th>"
 
 ENV TZ=Asia/Bangkok
@@ -13,8 +13,9 @@ RUN apt-get update &&  \
     libjpeg62-turbo-dev \
     libpng-dev \
     libfreetype6-dev \
-    git \
-    libmcrypt-dev && \
+    libzip-dev \
+    make automake autoconf \
+    git && \
     docker-php-ext-install iconv mbstring && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
@@ -22,6 +23,16 @@ RUN apt-get update &&  \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install gd
 
+#PHP-PSR
+RUN git clone https://github.com/jbboehr/php-psr.git /root/psr && \
+    cd /root/psr && \
+    phpize && \
+    ./configure && \
+    make && \
+    make test && \
+    make install && \
+    echo "extension=psr.so" > /usr/local/etc/php/conf.d/29-psr.ini && \
+    cd && rm -Rf /root/psr
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
@@ -38,7 +49,7 @@ RUN echo "post_max_size=21M" > /usr/local/etc/php/conf.d/custom.ini &&  \
     echo "session.gc_maxlifetime=86400" >> /usr/local/etc/php/conf.d/custom.ini 
 
 #get phalcon source
-RUN git clone --depth=1 git://github.com/phalcon/cphalcon.git /root/buildphalcon
+RUN git clone -b v4.0.0-alpha1 --single-branch git://github.com/phalcon/cphalcon.git /root/buildphalcon
 
 #compile phalcon
 RUN cd /root/buildphalcon/build/php7/64bits && \
@@ -46,10 +57,6 @@ RUN cd /root/buildphalcon/build/php7/64bits && \
     ./configure && make -j 8 && make install && \
     echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/30-phalcon.ini && \
     rm -Rf /root/buildphalcon
-
-#lib mcrypt
-RUN pecl install mcrypt-1.0.1 && \ 
-    echo "extension=mcrypt.so" >> /usr/local/etc/php/conf.d/custom.ini 
 
 #phalcon dev tool
 RUN cd /root && \
