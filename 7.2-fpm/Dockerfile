@@ -14,6 +14,7 @@ RUN apt-get update &&  \
     libpng-dev \
     libfreetype6-dev \
     git \
+    librabbitmq-dev \
     libmcrypt-dev && \
     docker-php-ext-install iconv mbstring && \
     docker-php-ext-install pdo pdo_mysql && \
@@ -27,10 +28,9 @@ RUN apt-get update &&  \
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-#mongodb
-RUN apt-get install -y --no-install-recommends libssl-dev && \
-    pecl install mongodb && \
-    echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/mongo.ini 
+#rabbit mq
+RUN pecl install amqp && \
+    echo "extension=amqp.so" > /usr/local/etc/php/conf.d/amqp.ini
 
 #custom
 RUN echo "post_max_size=21M" > /usr/local/etc/php/conf.d/custom.ini &&  \
