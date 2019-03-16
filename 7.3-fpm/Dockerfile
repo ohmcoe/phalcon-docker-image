@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 LABEL "MAINTAINER"="Sakarin Kammanee <Sakarin@coe.phuket.psu.ac.th>"
 
 ENV TZ=Asia/Bangkok
@@ -6,27 +6,29 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update &&  \
     apt-get install -y --no-install-recommends \
-    gcc \
     libpcre3-dev \
-    libxml2-dev \
-	zlib1g-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    libfreetype6-dev \
-    git \
+    gcc \
+    make \
+    re2c \
     librabbitmq-dev \
-    libmcrypt-dev && \
-    docker-php-ext-install iconv mbstring && \
+    git && \
     docker-php-ext-install pdo pdo_mysql && \
-    docker-php-ext-install mysqli && \
-    docker-php-ext-install zip xml && \
-    docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-    docker-php-ext-install gd
-
+    docker-php-ext-install mysqli 
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
+
+#PHP-PSR
+RUN git clone https://github.com/jbboehr/php-psr.git /root/psr && \
+    cd /root/psr && \
+    phpize && \
+    ./configure && \
+    make && \
+    make test && \
+    make install && \
+    echo "extension=psr.so" > /usr/local/etc/php/conf.d/29-psr.ini && \
+    cd && rm -Rf /root/psr
 
 #rabbit mq
 RUN pecl install amqp && \
@@ -41,15 +43,13 @@ RUN echo "post_max_size=21M" > /usr/local/etc/php/conf.d/custom.ini &&  \
 RUN git clone --depth=1 git://github.com/phalcon/cphalcon.git /root/buildphalcon
 
 #compile phalcon
-RUN cd /root/buildphalcon/build/php7/64bits && \
-    phpize && export CFLAGS="-O2 -s" && \
-    ./configure && make -j 8 && make install && \
+#RUN cd /root/buildphalcon/build/php7/64bits && \
+#    phpize && export CFLAGS="-O2 -s" && \
+#    ./configure && make -j 8 && make install && \
+RUN cd /root/buildphalcon/build && \
+    ./install && \
     echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/30-phalcon.ini && \
     rm -Rf /root/buildphalcon
-
-#lib mcrypt
-RUN pecl install mcrypt-1.0.1 && \ 
-    echo "extension=mcrypt.so" >> /usr/local/etc/php/conf.d/custom.ini 
 
 #phalcon dev tool
 RUN cd /root && \
