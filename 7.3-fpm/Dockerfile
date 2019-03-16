@@ -40,7 +40,7 @@ RUN echo "post_max_size=21M" > /usr/local/etc/php/conf.d/custom.ini &&  \
     echo "session.gc_maxlifetime=86400" >> /usr/local/etc/php/conf.d/custom.ini 
 
 #get phalcon source
-RUN git clone --depth=1 git://github.com/phalcon/cphalcon.git /root/buildphalcon
+RUN git clone --branch v3.4.3 --depth=1 git://github.com/phalcon/cphalcon.git /root/buildphalcon
 
 #compile phalcon
 #RUN cd /root/buildphalcon/build/php7/64bits && \
