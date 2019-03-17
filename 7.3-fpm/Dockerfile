@@ -13,7 +13,8 @@ RUN apt-get update &&  \
     librabbitmq-dev \
     git && \
     docker-php-ext-install pdo pdo_mysql && \
-    docker-php-ext-install mysqli 
+    docker-php-ext-install mysqli && \
+    docker-php-ext-install bcmath
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
