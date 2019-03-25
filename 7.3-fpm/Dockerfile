@@ -15,13 +15,17 @@ RUN apt-get update &&  \
 #start image
     libjpeg62-turbo-dev \
     libpng-dev \
-    libfreetype6-dev && \
+    libfreetype6-dev \
 #end image
+#begin zip
+    libzip-dev && \
+#end zip
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-install mysqli && \
     docker-php-ext-install bcmath sockets && \
     docker-php-ext-configure gd --enable-gd-native-ttf --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-    docker-php-ext-install gd
+    docker-php-ext-install gd && \
+    docker-php-ext-install zip
 
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php \
